@@ -3,17 +3,22 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "../settings.h"
 
-class CmdStream
+#define COMMAND_STREAM_SIZE		128
+
+namespace Cmd
+{
+
+class Stream
 {
 	public:
-		CmdStream();
+		Stream();
 
 		virtual bool read() = 0;
 		virtual bool write( const uint8_t *data, size_t size );
-		virtual bool printf( const char *format, ... );
-		virtual bool print( const char *string );
+		virtual void printf( const char *format, ... );
+		virtual void print( const char *string );
+		virtual void println( const char *string );
 
 		inline bool isCmdReady() const;
 		inline const char* lastCmd() const;
@@ -22,21 +27,22 @@ class CmdStream
 	private:
 		uint8_t m_index;
 		bool m_isCmdReady;
-		char m_lastCmd[ SET_COMMAND_STREAM_SIZE ];
+		char m_lastCmd[ COMMAND_STREAM_SIZE ];
 
 	protected:
 		void addChar( char value );
 };
 
 //	----- INLINE FUNCTIONS -----
-const char* CmdStream::lastCmd() const {
+const char* Stream::lastCmd() const {
 	return m_lastCmd;
 }
-bool CmdStream::isCmdReady() const {
+bool Stream::isCmdReady() const {
 	return m_isCmdReady;
 }
-void CmdStream::reset() {
+void Stream::reset() {
 	m_isCmdReady = false;
 }
 
+}
 #endif

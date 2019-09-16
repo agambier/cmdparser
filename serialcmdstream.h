@@ -3,12 +3,15 @@
 
 #include "cmdstream.h"
 
-class SerialCmdStream : public CmdStream
+namespace Cmd
+{
+class SerialStream : public Stream
 {
 	public:
 		bool read();
-		bool printf( const char *format, ... );
-		bool print( const char *string );
+		void printf( const char *format, ... );
+		void print( const char *string );
+		void println( const char *string );
 };
-
+}
 #endif

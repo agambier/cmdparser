@@ -2,13 +2,16 @@
 #include <string.h>
 #include "cmdparser.h"
 
+namespace Cmd
+{
+
 //
 //
-CmdParser::CmdParser()
+Parser::Parser()
 {
 	//	Set pointers of several streams...
 	uint8_t i = 0;
-#if defined( SET_SERIAL_COMMANDS )
+#if defined( SERIAL_COMMANDS )
 	m_streams[ i++ ] = &m_serialStream;
 #endif
 	for( ; i < CMDPARSER_MAX_STREAMS; i++ )
@@ -20,7 +23,7 @@ CmdParser::CmdParser()
 
 //
 //
-bool CmdParser::process()
+bool Parser::process()
 {
 	//	Try each stream until one gets a command line
 	const char *cmdLine = nullptr;
@@ -45,7 +48,7 @@ bool CmdParser::process()
 
 //
 //
-void CmdParser::findNextToken( CmdToken &token, const char *start )
+void Parser::findNextToken( Token &token, const char *start )
 {
 	token.setLength( 0 );
 	//	find start of token
@@ -57,3 +60,4 @@ void CmdParser::findNextToken( CmdToken &token, const char *start )
 	token.setLength( static_cast< uint8_t >( letter - token.start() ) );
 }
 
+}

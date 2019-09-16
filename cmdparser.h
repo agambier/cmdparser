@@ -1,7 +1,6 @@
 #ifndef __cmdparser_H__
 #define __cmdparser_H__
 
-#include "../settings.h"
 #include "cmdtoken.h"
 #include "serialcmdstream.h"
 
@@ -10,49 +9,52 @@
 //		WiFi UDP
 #define	CMDPARSER_MAX_STREAMS	2
 
-class CmdParser
+namespace Cmd
+{
+
+class Parser
 {
 	public:
-		CmdParser();
+		Parser();
 		
 		bool process();
 		
-		inline CmdStream* lastStream() const;
-		inline const CmdToken& cmd() const;
-		inline const CmdToken& arg() const;
+		inline Stream* lastStream() const;
+		inline const Token& cmd() const;
+		inline const Token& arg() const;
 		inline void shiftArg();
 		inline void resetArg();
 
 	protected:
-		CmdToken m_cmd;
-		CmdToken m_arg;
-		CmdStream *m_streams[ CMDPARSER_MAX_STREAMS ];
-		CmdStream *m_lastStream;
-#if defined( SET_SERIAL_COMMANDS )
-		SerialCmdStream m_serialStream;
+		Token m_cmd;
+		Token m_arg;
+		Stream *m_streams[ CMDPARSER_MAX_STREAMS ];
+		Stream *m_lastStream;
+#if defined( SERIAL_COMMANDS )
+		SerialStream m_serialStream;
 #endif
 
 	private:
-		void findNextToken( CmdToken &token, const char *start );
+		void findNextToken( Token &token, const char *start );
 };
 
 //	----- INLINE FUNCTIONS -----
-CmdStream* CmdParser::lastStream() const {
+Stream* Parser::lastStream() const {
 	return m_lastStream;
 }
-const CmdToken& CmdParser::cmd() const {
+const Token& Parser::cmd() const {
 	return m_cmd;
 }
-const CmdToken& CmdParser::arg() const {
+const Token& Parser::arg() const {
 	return m_arg;
 }
-void CmdParser::shiftArg() {
+void Parser::shiftArg() {
 	findNextToken( m_arg, m_arg.end() );
 }
-void CmdParser::resetArg() {
+void Parser::resetArg() {
 	memcpy( &m_arg, &m_cmd, sizeof( m_arg ) );
 	shiftArg();
 }
 
-
+}
 #endif

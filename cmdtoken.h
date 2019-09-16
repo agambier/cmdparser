@@ -5,10 +5,13 @@
 #include <stdint.h>
 #include <string.h>
 
-class CmdToken
+namespace Cmd
+{
+
+class Token
 {
 	public:
-		CmdToken( const char *start = nullptr, uint8_t length = 0 );
+		Token( const char *start = nullptr, uint8_t length = 0 );
 
 		inline const char* start() const;
 		inline void setStart( const char *start );
@@ -31,41 +34,41 @@ class CmdToken
 };
 
 //	----- INLINE FUNCTIONS -----
-const char* CmdToken::start() const {
+const char* Token::start() const {
 	return m_start;
 }
-void CmdToken::setStart( const char *start ) {
+void Token::setStart( const char *start ) {
 	m_start = start;
 }
-const char* CmdToken::end() const {
+const char* Token::end() const {
 	return m_start + m_length;
 }
-uint8_t CmdToken::length() const {
+uint8_t Token::length() const {
 	return m_length;
 }
-void CmdToken::setLength( uint8_t length ) {
+void Token::setLength( uint8_t length ) {
 	m_length = length;
 }
-bool CmdToken::isValid() const {
+bool Token::isValid() const {
 	return 0 != m_length;
 }
-void CmdToken::toString( char *string ) const {
+void Token::toString( char *string ) const {
 	strncpy( string, m_start, m_length );
 	string[ m_length ] = 0;
 }
-bool CmdToken::operator== ( const char *string ) const {
+bool Token::operator== ( const char *string ) const {
 	return ( strlen( string ) == m_length ) && !strncmp( m_start, string, m_length );
 }
-bool CmdToken::operator== ( const __FlashStringHelper *string ) const {
+bool Token::operator== ( const __FlashStringHelper *string ) const {
 	return ( strlen_P( reinterpret_cast< PGM_P >( string ) ) == m_length ) && !strncmp_P( m_start, reinterpret_cast< PGM_P >( string ), m_length );
 }
-bool CmdToken::operator!= ( const char *string ) const {
+bool Token::operator!= ( const char *string ) const {
 	return !operator==( string );
 }
-bool CmdToken::operator!= ( const __FlashStringHelper *string ) const {
+bool Token::operator!= ( const __FlashStringHelper *string ) const {
 	return !operator==( string );
 }
 
-
+}
 
 #endif

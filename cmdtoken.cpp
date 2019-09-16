@@ -1,10 +1,13 @@
 #include "cmdtoken.h"
 
+namespace Cmd
+{
 //
 //
-CmdToken::CmdToken( const char *start, uint8_t length ) :
+Token::Token( const char *start, uint8_t length ) :
 	m_start( start ), 
 	m_length( length )
 {
+}
 
 }

@@ -2,9 +2,11 @@
 #include <stdarg.h>
 #include "serialcmdstream.h"
 
+namespace Cmd
+{
 //
 //
-bool SerialCmdStream::read()
+bool SerialStream::read()
 {
 	while( Serial.available() )
 		addChar( static_cast< char >( Serial.read() ) );
@@ -14,7 +16,7 @@ bool SerialCmdStream::read()
 
 //
 //
-bool SerialCmdStream::printf( const char *format, ...  )
+void SerialStream::printf( const char *format, ...  )
 {
 	//	format string
 	va_list args;
@@ -25,14 +27,20 @@ bool SerialCmdStream::printf( const char *format, ...  )
 
 	//	output it
 	Serial.print( string );
-
-	return true;
 }
 
 //
 //
-bool SerialCmdStream::print( const char *string )
+void SerialStream::print( const char *string )
 {
 	Serial.print( string );
-	return true;
+}
+
+//
+//
+void SerialStream::println( const char *string )
+{
+	Serial.println( string );
+}
+
 }

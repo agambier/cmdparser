@@ -1,8 +1,10 @@
 #include "cmdstream.h"
 
+namespace Cmd
+{
 //
 //
-CmdStream::CmdStream() :
+Stream::Stream() :
 	m_index( 0 ),
 	m_isCmdReady( false )
 {
@@ -11,29 +13,32 @@ CmdStream::CmdStream() :
 
 //
 //
-bool CmdStream::write( const uint8_t *data, size_t size )
+bool Stream::write( const uint8_t *data, size_t size )
 {
 	return true;
 }
 
 //
 //
-bool CmdStream::printf( const char *format, ... )
+void Stream::printf( const char *format, ... )
 {
-	return true;
 }
 
 //
 //
-bool CmdStream::print( const char *string )
+void Stream::print( const char *string )
 {
-	return true;
 }
 
+//
+//
+void Stream::println( const char *string )
+{
+}
 
 //
 //
-void CmdStream::addChar( char value )
+void Stream::addChar( char value )
 {
 	if( '\n' == value )
 		return;
@@ -47,9 +52,10 @@ void CmdStream::addChar( char value )
 		m_index = 0;
 		m_isCmdReady = true;
 	}
-	else if( m_index < ( SET_COMMAND_STREAM_SIZE - 1 ) )
+	else if( m_index < ( COMMAND_STREAM_SIZE - 1 ) )
 	{
 		m_lastCmd[ m_index ] = value;
 		m_index ++;
 	}
+}
 }
