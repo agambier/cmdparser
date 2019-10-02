@@ -29,7 +29,8 @@ void System::processCmd( Cmd::Parser &parser )
 		return;
 
 	//	System information
-	if( parser.arg() == F( "info" ) )
+	if( ( parser.arg() == F( "info" ) )
+	||	( parser.arg() == F( "?" ) ) )
 	{	
 		parser.lastStream()->println( "System information..." );
 		parser.lastStream()->printf( "  State            : %s\n", isSystemReady() ? "READY" : "BOOT FAILED" );
@@ -58,8 +59,8 @@ void System::processCmd( Cmd::Parser &parser )
 	if( 0 == parser.arg().length() )
 	{
 		parser.lastStream()->println( "System commands..." );
-		parser.lastStream()->println( "  info -> Displays system information." );
-		parser.lastStream()->println( "  reboot -> Reboot system." );
+		parser.lastStream()->println( "  info, ?   Displays system information." );
+		parser.lastStream()->println( "  reboot    Reboot system." );
 		return;
 	}
 	
